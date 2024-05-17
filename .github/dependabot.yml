@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "cpan"  # Add Perl (CPAN) support
+    directory: "/"           # Update Perl dependencies in the root directory
+    schedule:
+      interval: "weekly"     # Adjust frequency if needed
