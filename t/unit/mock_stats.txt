@@ -1,0 +1,6 @@
++++ Statistics Dump +++ (1650000000)
+++ Incoming Queries ++
+  100 A
+  50 AAAA
+++ Name Server Statistics ++
+  200 queries resulted in successful answer

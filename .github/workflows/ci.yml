@@ -1,0 +1,65 @@
+name: Perl CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        perl-version: ['5.30', '5.32', '5.34']
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Perl
+      uses: shogo82148/actions-setup-perl@v1
+      with:
+        perl-version: ${{ matrix.perl-version }}
+
+    - name: Install dependencies
+      run: |
+        cpanm --quiet --notest --installdeps .
+        cpanm --quiet --notest Test::MockObject Test::MockModule
+        cpanm --quiet --notest Net::SNMP File::Slurp Log::Log4perl Config::IniFiles
+
+    - name: Run unit tests
+      run: prove -r t/unit
+
+    - name: Run integration tests
+      run: prove -r t/integration
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Perl
+      uses: shogo82148/actions-setup-perl@v1
+      with:
+        perl-version: '5.34'
+
+    - name: Install dependencies
+      run: |
+        cpanm --quiet --notest Perl::Critic
+        cpanm --quiet --notest Perl::Tidy
+
+    - name: Run Perl::Critic
+      run: |
+        perlcritic --quiet --severity 5 lib bin
+
+    - name: Check Perl::Tidy
+      run: |
+        find lib bin -name "*.pm" -o -name "*.pl" | xargs perltidy -b
+        if git diff --exit-code; then
+          echo "Code is properly formatted"
+        else
+          echo "Code is not properly formatted"
+          exit 1
+        fi

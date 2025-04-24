@@ -1,0 +1,15 @@
+bin/snmp_bind9_stats.pl
+CODE_OF_CONDUCT.md
+config.ini
+CONTRIBUTING.md
+lib/SNMP/BIND9/Agent.pm
+lib/SNMP/BIND9/Statistics.pm
+LICENSE
+Makefile.PL
+MANIFEST
+README.md
+SECURITY.md
+t/integration/01_stats_agent_integration.t
+t/unit/01_statistics.t
+t/unit/02_agent.t
+.github/workflows/ci.yml
